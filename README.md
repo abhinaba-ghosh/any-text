@@ -41,6 +41,23 @@ const text = reader.getText(`path-to-file`);
 console.log(text);
 ```
 
+## Sample Test
+
+```js
+var reader = require('any-text');
+
+const chai = require('chai');
+const expect = chai.expect;
+
+describe('file reader checks', () => {
+  it('check docx file content', async () => {
+    expect(
+      await reader.getText(`${process.cwd()}/test/files/dummy.docx`)
+    ).to.contains('Lorem ipsum');
+  });
+});
+```
+
 ## Tell me your issues
 
 you can raise any issue [here](https://github.com/abhinaba-ghosh/any-text/issues)
@@ -48,8 +65,6 @@ you can raise any issue [here](https://github.com/abhinaba-ghosh/any-text/issues
 ## Contribution
 
 Any pull request is welcome.
-
-If this plugin helps you in your automation journey, choose to [Sponsor](https://www.patreon.com/user?u=32109749&fan_landing=true)
 
 If it works for you , give a [Star](https://github.com/abhinaba-ghosh/any-text)! :star:
 
