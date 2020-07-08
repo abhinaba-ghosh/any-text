@@ -36,7 +36,7 @@ reader.getText(`path-to-file`).then(function (data) {
 ```js
 var reader = require('any-text');
 
-const text = reader.getText(`path-to-file`);
+const text = await reader.getText(`path-to-file`);
 
 console.log(text);
 ```
