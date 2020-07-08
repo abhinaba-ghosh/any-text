@@ -1,0 +1,36 @@
+{
+  "name": "anytext",
+  "version": "1.0.0",
+  "description": "Get text content from any file",
+  "main": "./index.js",
+  "keywords": [
+    "text-extract",
+    "get-text",
+    "parser",
+    "file-reader"
+  ],
+  "scripts": {
+    "test": "mocha test/**/*.spec.js --timeout 15000"
+  },
+  "author": "Abhinaba Ghosh <askabhinaba@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "node-stream-zip": "^1.11.2",
+    "pdf-parse": "^1.1.1",
+    "word-extractor": "^0.3.0",
+    "xlsx": "^0.16.3"
+  },
+  "devDependencies": {
+    "chai": "^4.2.0",
+    "chai-as-promised": "^7.1.1",
+    "mocha": "^8.0.1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/abhinaba-ghosh/cypress-react-selector.git"
+  },
+  "bugs": {
+    "url": "https://github.com/abhinaba-ghosh/cypress-react-selector/issues"
+  },
+  "homepage": "https://github.com/abhinaba-ghosh/cypress-react-selector#readme"
+}
