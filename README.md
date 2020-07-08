@@ -2,7 +2,7 @@
 
 Extract text content from a file.
 
-## Supported File Extensions
+### Supported File Extensions
 
 - DOC
 - DOCX
@@ -13,7 +13,7 @@ Extract text content from a file.
 - XLS
 - XLSX
 
-## How to use
+### How to use
 
 - Install the library as a dependency (/dev-dependency)
 
@@ -41,7 +41,7 @@ const text = reader.getText(`path-to-file`);
 console.log(text);
 ```
 
-## Sample Test
+### Sample Test
 
 ```js
 var reader = require('any-text');
@@ -58,11 +58,11 @@ describe('file reader checks', () => {
 });
 ```
 
-## Tell me your issues
+### Tell me your issues
 
 you can raise any issue [here](https://github.com/abhinaba-ghosh/any-text/issues)
 
-## Contribution
+### Contribution
 
 Any pull request is welcome.
 
