@@ -16,7 +16,7 @@ extract = (filePath) => {
       for (let i = 0; i < components.length; i++) {
         let tags = components[i].split('>');
         let content = tags[1].replace(/<.*$/, '');
-        body += content + ' ';
+        body += content;
       }
       resolve(body);
     });
