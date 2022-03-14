@@ -26,9 +26,13 @@ npm i -D any-text
 ```js
 var reader = require('any-text');
 
-reader.getText(`path-to-file`).then(function (data) {
-  console.log(data);
-});
+reader.getText(`path-to-file`)
+  .then(function (data) {
+    console.log(data); // handle success
+  })
+  .catch(function (error) {
+    console.log(error); // handle error
+  });
 ```
 
 - You can also use the `async/await` notation
