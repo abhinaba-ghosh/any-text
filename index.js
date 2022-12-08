@@ -2,7 +2,7 @@ const fs = require('fs');
 const StreamZip = require('node-stream-zip');
 const XLSX = require('xlsx');
 const pdf = require('pdf-parse');
-var WordExtractor = require('word-extractor');
+let WordExtractor = require('word-extractor');
 
 // extract text from office books as doc and docx
 extract = (filePath) => {
@@ -69,15 +69,11 @@ exports.getText = async (filePath) => {
   switch (fileExtension) {
     // read pdf
     case '.pdf':
-      fileContent = await (await pdf(data)).text;
+      fileContent = (await pdf(data)).text;
       break;
 
     // read docs
-
     case '.docx':
-      fileContent = await extract(filePath);
-      break;
-
     case '.doc':
       var extractor = new WordExtractor();
       var extracted = await extractor.extract(filePath);
@@ -101,9 +97,10 @@ exports.getText = async (filePath) => {
       fileContent = JSON.stringify(result);
       break;
 
-    // read text and csv
+    // read text, csv and json
     case '.txt':
     case '.csv':
+    case '.json':
       fileContent = data.toString();
       break;
 
@@ -111,6 +108,5 @@ exports.getText = async (filePath) => {
     default:
       throw new Error('unknown extension found!');
   }
-  // console.log(`This is file content ==> ${fileContent}`);
   return fileContent;
 };

@@ -12,6 +12,7 @@ Extract text content from a file.
 - TXT
 - XLS
 - XLSX
+- JSON
 
 ### How to use
 
@@ -26,7 +27,8 @@ npm i -D any-text
 ```js
 var reader = require('any-text');
 
-reader.getText(`path-to-file`)
+reader
+  .getText(`path-to-file`)
   .then(function (data) {
     console.log(data); // handle success
   })
@@ -55,9 +57,9 @@ const expect = chai.expect;
 
 describe('file reader checks', () => {
   it('check docx file content', async () => {
-    expect(
-      await reader.getText(`${process.cwd()}/test/files/dummy.docx`)
-    ).to.contains('Lorem ipsum');
+    expect(await reader.getText(`${process.cwd()}/test/files/dummy.docx`)).to.contains(
+      'Lorem ipsum'
+    );
   });
 });
 ```
