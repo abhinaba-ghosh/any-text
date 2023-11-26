@@ -56,7 +56,7 @@ getFileExtension = (filename) => {
   let dot = filename.lastIndexOf('.');
   if (dot == -1) return '';
   const extension = filename.substr(dot, filename.length);
-  return extension;
+  return extension.toLowerCase();
 };
 
 // read the file and extract text
