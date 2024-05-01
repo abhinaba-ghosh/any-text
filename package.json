@@ -18,7 +18,7 @@
         "node-stream-zip": "^1.11.2",
         "pdf-parse": "^1.1.1",
         "word-extractor": "^1.0.4",
-        "xlsx": "^0.18.0"
+        "xlsx": "^0.18.5"
     },
     "devDependencies": {
         "chai": "^4.2.0",
