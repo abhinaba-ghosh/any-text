@@ -13,6 +13,7 @@ Extract text content from a file.
 - XLS
 - XLSX
 - JSON
+- PPTX
 
 ### How to use
 
@@ -28,7 +29,7 @@ npm i -D any-text
 var reader = require('any-text');
 
 reader
-  .getText(`path-to-file`)
+  .getText({ filePath: `path-to-file` })
   .then(function (data) {
     console.log(data); // handle success
   })
@@ -42,10 +43,22 @@ reader
 ```js
 var reader = require('any-text');
 
-const text = await reader.getText(`path-to-file`);
+const text = await reader.getText({ filePath: `path-to-file` });
 
 console.log(text);
 ```
+
+- The `getText` method now also supports buffer input
+```js
+var reader = require('any-text');
+
+const buffer = fs.readFileSync(`path-to-file`);
+const text = await reader.getText({ fileData: buffer, fileExtension: '.pdf' });
+
+console.log(text);
+
+```
+
 
 ### Sample Test
 
@@ -57,11 +70,18 @@ const expect = chai.expect;
 
 describe('file reader checks', () => {
   it('check docx file content', async () => {
-    expect(await reader.getText(`${process.cwd()}/test/files/dummy.docx`)).to.contains(
+    expect(await reader.getText({ filePath: `${process.cwd()}/test/files/dummy.docx` })).to.contains(
       'Lorem ipsum'
     );
   });
+  
+  it('check pptx file content', async () => {
+    expect(await reader.getText({ filePath: `${process.cwd()}/test/files/sample.pptx` })).to.contains(
+      'Sample text'
+    );
+  });
 });
+
 ```
 
 ### Tell me your issues

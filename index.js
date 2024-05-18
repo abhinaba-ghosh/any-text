@@ -1,8 +1,11 @@
 const fs = require('fs');
 const StreamZip = require('node-stream-zip');
 const XLSX = require('xlsx');
-const pdf = require('pdf-parse');
+const pdf = require('pdf-parse/lib/pdf-parse');
+const JSZip = require('jszip');
 let WordExtractor = require('word-extractor');
+const { DOMParser } = require('xmldom');
+
 
 // extract text from office books as doc and docx
 extract = (filePath) => {
@@ -50,6 +53,51 @@ open = (filePath) => {
   });
 };
 
+getTextFromPPTX = async (buffer) => {
+  try {
+      const zip = new JSZip();
+      await zip.loadAsync(buffer);
+
+      const aNamespace =
+          "http://schemas.openxmlformats.org/drawingml/2006/main";
+      let text = [];
+
+      let slideIndex = 1;
+      while (true) {
+          const slideFile = zip.file(`ppt/slides/slide${slideIndex}.xml`);
+
+          if (!slideFile) break;
+
+          const slideXmlStr = await slideFile.async("text");
+
+          const parser = new DOMParser();
+          const xmlDoc = parser.parseFromString(
+              slideXmlStr,
+              "application/xml"
+          );
+
+          text.push(getTextFromNodes(xmlDoc, "t", aNamespace));
+          slideIndex++;
+      }
+
+      return text;
+  } catch (err) {
+      console.error("Error extracting text from PPTX:", err);
+      return "";
+  }
+}
+
+function getTextFromNodes(node, tagName, namespaceURI) {
+  let text = "";
+  const textNodes = node.getElementsByTagNameNS(namespaceURI, tagName);
+  for (let i = 0; i < textNodes.length; i++) {
+      text += textNodes[i].textContent + " ";
+  }
+  return text.trim();
+}
+
+
+
 // get the file extension based on the file path
 getFileExtension = (filename) => {
   if (filename.length == 0) return '';
@@ -60,12 +108,25 @@ getFileExtension = (filename) => {
 };
 
 // read the file and extract text
-exports.getText = async (filePath) => {
+exports.getText = async ({ filePath, fileData, fileExtension }) => {
   let fileContent = '';
 
-  let data = fs.readFileSync(filePath);
-  const fileExtension = getFileExtension(filePath);
+  if (filePath) {
+    // Legge il file dal percorso specificato
+    fileData = fs.readFileSync(filePath);
+    fileExtension = getFileExtension(filePath);
+  } else if (!fileData || !fileExtension) {
+    throw new Error('you have to provide either file path or file data and extension!');
+  }
 
+  if(!fileExtension){
+    fileExtension = getFileExtension(filePath);
+  }
+  if(!fileData){
+    var data = fs.readFileSync(filePath);
+  }else{
+    var data = fileData;
+  }
   switch (fileExtension) {
     // read pdf
     case '.pdf':
@@ -76,7 +137,7 @@ exports.getText = async (filePath) => {
     case '.docx':
     case '.doc':
       var extractor = new WordExtractor();
-      var extracted = await extractor.extract(filePath);
+      var extracted = await extractor.extract(data);
       fileContent = extracted.getBody();
       break;
 
@@ -103,7 +164,9 @@ exports.getText = async (filePath) => {
     case '.json':
       fileContent = data.toString();
       break;
-
+    case '.pptx':
+      fileContent = await getTextFromPPTX(data);
+      break;
     // default case
     default:
       throw new Error('unknown extension found!');
